@@ -1,0 +1,2 @@
+	- Compile code với tùy chọn lstdc++ như trong video để tránh phát sinh lỗi
+	- Hiện tại chức năng gọi món, hiển thị món đã gọi và xóa món trong thực đơn không khả dụng.
