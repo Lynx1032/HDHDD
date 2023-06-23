@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +10,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -64,17 +67,26 @@ public class MainGUI extends JFrame {
         JPanel panelPhongBan = new JPanel();
         contentPane.add(panelPhongBan, BorderLayout.NORTH);
 
-        tfMaPhongBan = new JTextField();
-        panelPhongBan.add(tfMaPhongBan);
-        tfMaPhongBan.setColumns(10);
+        JLabel labelMaPhongBan = new JLabel("Mã phòng ban:");
+		panelPhongBan.add(labelMaPhongBan);
 
-        tfTenPhongBan = new JTextField();
-        panelPhongBan.add(tfTenPhongBan);
-        tfTenPhongBan.setColumns(10);
+		tfMaPhongBan = new JTextField();
+		panelPhongBan.add(tfMaPhongBan);
+		tfMaPhongBan.setColumns(10);
 
-        tfSoLuongNhanVien = new JTextField();
-        panelPhongBan.add(tfSoLuongNhanVien);
-        tfSoLuongNhanVien.setColumns(10);
+        JLabel labelTenPhongBan = new JLabel("Tên phòng ban:");
+		panelPhongBan.add(labelTenPhongBan);
+
+		tfTenPhongBan = new JTextField();
+		panelPhongBan.add(tfTenPhongBan);
+		tfTenPhongBan.setColumns(10);
+
+        JLabel labelSoLuongNhanVien = new JLabel("Số lượng nhân viên:");
+		panelPhongBan.add(labelSoLuongNhanVien);
+
+		tfSoLuongNhanVien = new JTextField();
+		panelPhongBan.add(tfSoLuongNhanVien);
+		tfSoLuongNhanVien.setColumns(10);
 
         JButton btnTaoPhongBan = new JButton("Tạo phòng ban");
         btnTaoPhongBan.addActionListener(new ActionListener() {
@@ -86,25 +98,40 @@ public class MainGUI extends JFrame {
             }
         });
         panelPhongBan.add(btnTaoPhongBan);
-
-        JPanel panelNhanVien = new JPanel();
-        contentPane.add(panelNhanVien, BorderLayout.WEST);
+		
+		JPanel panelNhanVien = new JPanel();
+		contentPane.add(panelNhanVien, BorderLayout.WEST);
+		
+		JLabel labelHoTen = new JLabel("Họ và tên:");
+		panelNhanVien.add(labelHoTen);
 
         tfHoTen = new JTextField();
         panelNhanVien.add(tfHoTen);
         tfHoTen.setColumns(10);
 
+		JLabel labelMaNhanVien = new JLabel("Mã NV:");
+		panelNhanVien.add(labelMaNhanVien);
+		
         tfMaNhanVien = new JTextField();
         panelNhanVien.add(tfMaNhanVien);
         tfMaNhanVien.setColumns(10);
+		
+		JLabel labelHeSoLuong = new JLabel("Hệ số lương:");
+		panelNhanVien.add(labelHeSoLuong);
 
         tfHeSoLuong = new JTextField();
         panelNhanVien.add(tfHeSoLuong);
         tfHeSoLuong.setColumns(10);
+		
+		JLabel labelSoNgayLamViec = new JLabel("Số ngày làm việc:");
+		panelNhanVien.add(labelSoNgayLamViec);
 
         tfSoNgayLamViec = new JTextField();
         panelNhanVien.add(tfSoNgayLamViec);
         tfSoNgayLamViec.setColumns(10);
+		
+		JPanel buttonPanel = new JPanel();
+		panelNhanVien.add(buttonPanel);
 
         JButton btnThemNhanVien = new JButton("Thêm nhân viên");
         btnThemNhanVien.addActionListener(new ActionListener() {
@@ -119,7 +146,48 @@ public class MainGUI extends JFrame {
                 hienThiDanhSachNhanVien();
             }
         });
-        panelNhanVien.add(btnThemNhanVien);
+        buttonPanel.add(btnThemNhanVien);
+		
+		JButton btnXoaNhanVien = new JButton("Xóa nhân viên");
+		btnXoaNhanVien.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedIndex = tableNhanVien.getSelectedRow();
+				if (selectedIndex != -1) {
+					NhanVien nhanVien = danhSachNhanVien.get(selectedIndex);
+					danhSachNhanVien.remove(selectedIndex);
+					phongBan.xoaNhanVien(nhanVien);
+					hienThiDanhSachNhanVien();
+				}
+			}
+		});
+		buttonPanel.add(btnXoaNhanVien);
+		
+		
+		JButton btnSuaNhanVien = new JButton("Sửa nhân viên");
+		btnSuaNhanVien.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedIndex = tableNhanVien.getSelectedRow();
+				if (selectedIndex != -1) {
+					NhanVien nhanVien = danhSachNhanVien.get(selectedIndex);
+					String hoTen = tfHoTen.getText();
+					double heSoLuong = Double.parseDouble(tfHeSoLuong.getText());
+					int soNgayLamViec = Integer.parseInt(tfSoNgayLamViec.getText());
+					nhanVien.setHoTen(hoTen);
+					nhanVien.setHeSoLuong(heSoLuong);
+					nhanVien.setSoNgayLamViec(soNgayLamViec);
+					phongBan.capNhatNhanVien(nhanVien);
+					hienThiDanhSachNhanVien();
+				}
+			}
+		});
+		buttonPanel.add(btnSuaNhanVien);
+		
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		panelNhanVien.setLayout(new GridLayout(8, 2));
+		
+		
+		
+		panelNhanVien.add(buttonPanel, BorderLayout.SOUTH);
 
         JScrollPane scrollPaneNhanVien = new JScrollPane();
         contentPane.add(scrollPaneNhanVien, BorderLayout.CENTER);

@@ -45,6 +45,16 @@ public class PhongBan {
     public void themNhanVien(NhanVien nhanVien) {
         danhSachNhanVien.add(nhanVien);
     }
+	
+	public void xoaNhanVien(NhanVien nhanVien) {
+        danhSachNhanVien.remove(nhanVien);
+    }
+	
+	public void capNhatNhanVien(NhanVien nhanVien) {
+    // This method assumes that the danhSachNhanVien list is already updated
+    // with the new NhanVien object. If you need to modify the list, you can
+    // implement that logic here.
+	}
 
     public double tinhTongLuong() {
         double tongLuong = 0;

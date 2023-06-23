@@ -21,8 +21,7 @@ Chức năng cần thực hiện:
  
  
 CẬP NHẬT TIẾN ĐỘ:
-	- Giao diện vẫn còn lộn xộn.
-	- Chức năng xóa, chỉnh sửa, tìm kiếm, sắp xếp theo thông tin nhân viên vẫn chưa có.
+	- Chức năng tìm kiếm, sắp xếp nhân viên vẫn chưa có.
 	- Chưa thể gán vị trí cụ thể cho từng nhân viên.
 	- Chưa thể sắp xếp nhân viên vào đúng phòng ban.
 	...
