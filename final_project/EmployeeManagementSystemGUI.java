@@ -18,7 +18,7 @@ public class EmployeeManagementSystemGUI {
     }
 
     private void createGUI() {
-        frame = new JFrame("Employee Management System");
+        frame = new JFrame("Quản lý nhân viên");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1000, 600));
         frame.setLocationRelativeTo(null);
@@ -26,15 +26,15 @@ public class EmployeeManagementSystemGUI {
         panel = new JPanel(new BorderLayout());
 
         // create department table
-        departmentTableModel = new DefaultTableModel(new Object[] { "Department ID", "Department Name",
-                "Number of Employees" }, 0);
+        departmentTableModel = new DefaultTableModel(new Object[] { "MÃ PHÒNG BAN", "TÊN PHÒNG BAN",
+                "SÔ NHÂN VIÊN" }, 0);
         departmentTable = new JTable(departmentTableModel);
         JScrollPane departmentScrollPane = new JScrollPane(departmentTable);
         departmentScrollPane.setPreferredSize(new Dimension(500, 200));
 
         // create employee table
-        employeeTableModel = new DefaultTableModel(new Object[] { "Employee ID", "Full Name", "Phone Number",
-                "Email", "Department ID", "Position", "Salaries", "Allowances", "Bonuses", "Penalties", "Tổng" }, 0);
+        employeeTableModel = new DefaultTableModel(new Object[] { "MÃ NHÂN VIÊN", "HỌ TÊN", "SĐT",
+                "Email", "MÃ PHÒNG BAN", "VỊ TRÍ", "LƯƠNG CƠ BẢN", "PHỤ CẤP", "THƯỞNG", "PHẠT", "TỔNG" }, 0);
         employeeTable = new JTable(employeeTableModel);
         JScrollPane employeeScrollPane = new JScrollPane(employeeTable);
         employeeScrollPane.setPreferredSize(new Dimension(900, 200));
@@ -75,10 +75,15 @@ public class EmployeeManagementSystemGUI {
 
         // add import/export button to panel
         JPanel importExportPanel = new JPanel();
-        JButton importBtn = new JButton("Import from txt file");
-        JButton exportBtn = new JButton("Export to txt file");
-        importExportPanel.add(importBtn);
-        importExportPanel.add(exportBtn);
+        JButton importDepartmentBtn = new JButton("Nhập danh sách phòng ban từ file text");
+        JButton exportDepartmentBtn = new JButton("Xuất danh sách phòng ban vào file text");
+		JButton importEmployeeBtn = new JButton("Nhập danh sách nhân viên từ file text");
+        JButton exportEmployeeBtn = new JButton("Xuất danh sách nhân viên vào file text");
+        importExportPanel.add(importDepartmentBtn);
+        importExportPanel.add(exportDepartmentBtn);
+		importExportPanel.add(importEmployeeBtn);
+		importExportPanel.add(exportEmployeeBtn);
+		
         panel.add(importExportPanel, BorderLayout.SOUTH);
 
         frame.getContentPane().add(panel);
@@ -93,10 +98,10 @@ public class EmployeeManagementSystemGUI {
                 int dNOE = Integer.parseInt(JOptionPane.showInputDialog(frame, "Nhập số lượng nhân viên:"));
                 
                 // Create person object with entered information
-                Department department = new Department(dID, dName, dNOE);
+                //Department department = new Department(dID, dName, dNOE);
                 
                 // Add person object to table model
-                departmentTableModel.addRow(new Object[] { department.getDepartmentID(), department.getDepartmentName(), department.getNumberOfEmployees() });
+                departmentTableModel.addRow(new Object[] { dID, dName, dNOE });
             }
         });
 		
@@ -344,48 +349,101 @@ public class EmployeeManagementSystemGUI {
 			}
 		});
 		
+		importDepartmentBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				int result = fileChooser.showOpenDialog(null);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					try {
+						BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+						String line;
+						DefaultTableModel model = (DefaultTableModel) departmentTable.getModel();
+						while ((line = reader.readLine()) != null) {
+							String[] parts = line.split(",");
+							model.addRow(parts);
+						}
+						reader.close();
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+		
+		exportDepartmentBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				int result = fileChooser.showSaveDialog(null);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					try {
+						PrintWriter writer = new PrintWriter(selectedFile);
+						for (int i = 0; i < departmentTable.getRowCount(); i++) {
+							for (int j = 0; j < departmentTable.getColumnCount(); j++) {
+								writer.print(departmentTable.getValueAt(i, j));
+								if (j != departmentTable.getColumnCount() - 1) {
+									writer.print(",");
+								}
+							}
+							writer.println();
+						}
+						writer.close();
+					} catch (FileNotFoundException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+		
+		importEmployeeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				int result = fileChooser.showOpenDialog(null);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					try {
+						BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+						String line;
+						DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
+						while ((line = reader.readLine()) != null) {
+							String[] parts = line.split(",");
+							model.addRow(parts);
+						}
+						reader.close();
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+		
+		exportEmployeeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				int result = fileChooser.showSaveDialog(null);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					try {
+						PrintWriter writer = new PrintWriter(selectedFile);
+						for (int i = 0; i < employeeTable.getRowCount(); i++) {
+							for (int j = 0; j < employeeTable.getColumnCount(); j++) {
+								writer.print(employeeTable.getValueAt(i, j));
+								if (j != employeeTable.getColumnCount() - 1) {
+									writer.print(",");
+								}
+							}
+							writer.println();
+						}
+						writer.close();
+					} catch (FileNotFoundException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+		
 	}
-
-    private void importFromTxtFile() {
-        try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data.length == 3) {
-                    departmentTableModel.addRow(data);
-                } else if (data.length == 10) {
-                    employeeTableModel.addRow(data);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void exportToTxtFile() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("data.txt"))) {
-            for (int i = 0; i < departmentTableModel.getRowCount(); i++) {
-                String line = "";
-                for (int j = 0; j < departmentTableModel.getColumnCount(); j++) {
-                    line += departmentTableModel.getValueAt(i, j) + ",";
-                }
-                line = line.substring(0, line.length() - 1); // remove last comma
-                bw.write(line);
-                bw.newLine();
-            }
-            for (int i = 0; i < employeeTableModel.getRowCount(); i++) {
-                String line = "";
-                for (int j = 0; j < employeeTableModel.getColumnCount(); j++) {
-                    line += employeeTableModel.getValueAt(i, j) + ",";
-                }
-                line = line.substring(0, line.length() - 1); // remove last comma
-                bw.write(line);
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String[] args) {
         new EmployeeManagementSystemGUI();
