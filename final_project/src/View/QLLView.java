@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+
 import Controller.QLLNhanVienController;
 import Controller.QLLPhongBanController;
 import model.QLLModel;
@@ -42,6 +43,7 @@ import model.NhanVienThoiVu;
 import model.NhanVienThucTap;
 import model.NhanVienVanHanh;
 import model.NhanVienToanThoiGian;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
@@ -1641,20 +1643,23 @@ public class QLLView extends JFrame {
 
 	public void thucHienSaveFile() {
 		try {
-			FileOutputStream fosNV = new FileOutputStream("\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\NhanVien.txt");
+			FileOutputStream fosNV = new FileOutputStream("NhanVien.txt");
 			ObjectOutputStream oosNV = new ObjectOutputStream(fosNV);
 			for(NhanVien nv : this.model.getDanhSachNhanVien()) {
 				oosNV.writeObject(nv);
+				oosNV.flush();
 			}
+			
 			oosNV.close();
 			fosNV.close();
 			
-			FileOutputStream fosPB = new FileOutputStream("\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\PhongBan.txt");
+			FileOutputStream fosPB = new FileOutputStream("PhongBan.txt");
 			ObjectOutputStream oosPB = new ObjectOutputStream(fosPB);
 			for(PhongBan pb : this.model.getDanhSachPhongBan()) {
 				oosPB.writeObject(pb);
-				
+				oosPB.flush();
 			}
+			
 			oosPB.close();
 			fosPB.close();
 			
@@ -1668,7 +1673,7 @@ public class QLLView extends JFrame {
 		ArrayList<NhanVien> dsNhanVien = new ArrayList<NhanVien>();
 		ArrayList<PhongBan> dsPhongBan = new ArrayList<PhongBan>();
 		try {
-			FileInputStream fisNV = new FileInputStream("C:\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\NhanVien.txt");
+			FileInputStream fisNV = new FileInputStream("NhanVien.txt");
 			ObjectInputStream oisNV = new ObjectInputStream(fisNV);
 			
 			NhanVien nv = null;
@@ -1678,7 +1683,7 @@ public class QLLView extends JFrame {
 			}
 			oisNV.close();
 			
-			FileInputStream fisPB = new FileInputStream("C:\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\PhongBan.txt");
+			FileInputStream fisPB = new FileInputStream("PhongBan.txt");
 			ObjectInputStream oisPB = new ObjectInputStream(fisPB);
 			
 			PhongBan pb = null;
