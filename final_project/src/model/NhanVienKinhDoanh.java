@@ -15,6 +15,6 @@ public class NhanVienKinhDoanh extends NhanVienToanThoiGian {
 
 	@Override
 	public String getLuongThang() {
-		return luongNgay*30 + "/" + "thang";
+		return luongNgay + "/" + "ngay";
 	}
 }
