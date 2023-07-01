@@ -1,6 +1,8 @@
 package model;
 
-public class NhanVienBaoVe extends NhanVienToanThoiGian {
+import java.io.*;
+
+public class NhanVienBaoVe extends NhanVienToanThoiGian implements Serializable{
     private double luongThang;
 
     public NhanVienBaoVe(String maNhanVien, String hoTen, String soDienThoai, String email, PhongBan phongBan, double phuCap, double thuong, double phat) {

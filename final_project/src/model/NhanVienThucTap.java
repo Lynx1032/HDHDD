@@ -1,6 +1,9 @@
 package model;
 
-public class NhanVienThucTap extends NhanVien {
+import java.io.*;
+
+
+public class NhanVienThucTap extends NhanVien implements Serializable{
 	private double thuong;
 	private double phat;
 	

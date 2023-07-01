@@ -1,6 +1,8 @@
-package model;
+//package model
 
-public abstract class NhanVien {
+import java.io.*;
+
+public abstract class NhanVien implements Serializable{
     private String maNhanVien;
     private String hoTen;
     private String soDienThoai;

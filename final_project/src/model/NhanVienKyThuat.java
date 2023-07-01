@@ -1,5 +1,8 @@
 package model;
 
+import java.io.*;
+
+
 public class NhanVienKyThuat extends NhanVienToanThoiGian {
     private double luongThang;
 
