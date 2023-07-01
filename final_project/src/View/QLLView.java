@@ -957,7 +957,8 @@ public class QLLView extends JFrame {
 		String soDienThoai = this.textField_Info_SoDienThoai.getText();
 		String eMail = this.textField_Info_Email.getText();
 		int indexPhong = this.comboBox_Info_PhongBan.getSelectedIndex() - 1;
-		PhongBan phongBan = this.model.getPhongBanById(indexPhong);
+		String tenPhong = this.comboBox_Info_PhongBan.getSelectedItem() + "";
+		PhongBan phongBan = this.model.getPhongBanByTen(tenPhong);
 		
 //		if(!this.comboBox_Info_PhongBan.getSelectedItem().equals("ThoiVu")) {
 //			this.textField_Info_PhuCap.setEditable(true);
