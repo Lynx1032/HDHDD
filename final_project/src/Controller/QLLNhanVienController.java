@@ -21,7 +21,7 @@ public class QLLNhanVienController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmNhanVien = e.getActionCommand();
-		JOptionPane.showMessageDialog(this.view, "Ban vua nhan vao: " + cmNhanVien);
+		//JOptionPane.showMessageDialog(this.view, "Ban vua nhan vao: " + cmNhanVien);
 		
 		if(cmNhanVien.equals("Nhap")) {
 			this.view.xoaFormNV();
