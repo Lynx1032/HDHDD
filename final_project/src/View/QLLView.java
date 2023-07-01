@@ -1121,7 +1121,7 @@ public class QLLView extends JFrame {
 					model_table.setValueAt(10000 + "/thang", i, 5);
 					model_table.setValueAt(10000 + nvToanTG.getPhuCap() + nvToanTG.getThuong() - nvToanTG.getPhat() + "", i, 9);
 				
-				} else if(nvToanTG.getPhongBan().getTenPhongBan().equals("Ky Thuat")) {
+				} else if(nvToanTG.getPhongBan().getTenPhongBan().equals("Bao Ve")) {
 					model_table.setValueAt(5000 + "/thang", i, 5);
 					model_table.setValueAt(5000 + nvToanTG.getPhuCap() + nvToanTG.getThuong() - nvToanTG.getPhat() + "", i, 9);
 				}
