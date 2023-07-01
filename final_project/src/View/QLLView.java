@@ -1,4 +1,4 @@
-package View;
+//package View;
 
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+/*
 import Controller.QLLNhanVienController;
 import Controller.QLLPhongBanController;
 import model.QLLModel;
@@ -38,6 +39,7 @@ import model.NhanVienThoiVu;
 import model.NhanVienThucTap;
 import model.NhanVienVanHanh;
 import model.NhanVienToanThoiGian;
+*/
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
