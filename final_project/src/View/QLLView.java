@@ -14,6 +14,10 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
@@ -954,7 +958,6 @@ public class QLLView extends JFrame {
 		String hoTen = this.textField_Info_HoTen.getText();
 		String soDienThoai = this.textField_Info_SoDienThoai.getText();
 		String eMail = this.textField_Info_Email.getText();
-		int indexPhong = this.comboBox_Info_PhongBan.getSelectedIndex() - 1;
 		String tenPhong = this.comboBox_Info_PhongBan.getSelectedItem() + "";
 		PhongBan phongBan = this.model.getPhongBanByTen(tenPhong);
 		
@@ -1121,7 +1124,7 @@ public class QLLView extends JFrame {
 					model_table.setValueAt(10000 + "/thang", i, 5);
 					model_table.setValueAt(10000 + nvToanTG.getPhuCap() + nvToanTG.getThuong() - nvToanTG.getPhat() + "", i, 9);
 				
-				} else if(nvToanTG.getPhongBan().getTenPhongBan().equals("Bao Ve")) {
+				} else if(nvToanTG.getPhongBan().getTenPhongBan().equals("Ky Thuat")) {
 					model_table.setValueAt(5000 + "/thang", i, 5);
 					model_table.setValueAt(5000 + nvToanTG.getPhuCap() + nvToanTG.getThuong() - nvToanTG.getPhat() + "", i, 9);
 				}
@@ -1195,7 +1198,6 @@ public class QLLView extends JFrame {
 			String hoTen = model_table.getValueAt(i_row, 1)+ "";
 			String soDienThoai = model_table.getValueAt(i_row, 2)+ "";
 			String eMail = model_table.getValueAt(i_row, 3)+ "";
-			
 			PhongBan phongBan = this.model.getPhongBanByTen(model_table.getValueAt(i_row, 4) + "");
 			
 			//double phuCap = Float.valueOf(model_table.getValueAt(i_row, 6)+ "");
@@ -1469,9 +1471,6 @@ public class QLLView extends JFrame {
 		}
 		
 	}
-
-	
-	
 	//Bat Dau Set View Phong Ban
 	public void xoaFormPB() {
 		this.textField_PB_Info_MaPhongBan.setText("");
@@ -1638,5 +1637,62 @@ public class QLLView extends JFrame {
 		for(PhongBan pb : this.model.getDanhSachPhongBan()) {
 			this.themPhongBanVaoTable(pb);
 		}	
+	}
+
+	public void thucHienSaveFile() {
+		try {
+			FileOutputStream fosNV = new FileOutputStream("\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\NhanVien.txt");
+			ObjectOutputStream oosNV = new ObjectOutputStream(fosNV);
+			for(NhanVien nv : this.model.getDanhSachNhanVien()) {
+				oosNV.writeObject(nv);
+			}
+			oosNV.close();
+			fosNV.close();
+			
+			FileOutputStream fosPB = new FileOutputStream("\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\PhongBan.txt");
+			ObjectOutputStream oosPB = new ObjectOutputStream(fosPB);
+			for(PhongBan pb : this.model.getDanhSachPhongBan()) {
+				oosPB.writeObject(pb);
+				
+			}
+			oosPB.close();
+			fosPB.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+	}
+
+	public void thucHienOpenFile() {
+		ArrayList<NhanVien> dsNhanVien = new ArrayList<NhanVien>();
+		ArrayList<PhongBan> dsPhongBan = new ArrayList<PhongBan>();
+		try {
+			FileInputStream fisNV = new FileInputStream("C:\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\NhanVien.txt");
+			ObjectInputStream oisNV = new ObjectInputStream(fisNV);
+			
+			NhanVien nv = null;
+			while (fisNV.available() > 0) {
+			    nv = (NhanVien) oisNV.readObject();
+			    dsNhanVien.add(nv);
+			}
+			oisNV.close();
+			
+			FileInputStream fisPB = new FileInputStream("C:\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\PhongBan.txt");
+			ObjectInputStream oisPB = new ObjectInputStream(fisPB);
+			
+			PhongBan pb = null;
+			while (fisPB.available() > 0) {
+				pb = (PhongBan) oisPB.readObject();
+				dsPhongBan.add(pb);
+			}
+			oisPB.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		this.model.setDanhSachNhanVien(dsNhanVien);
+		this.model.setDanhSachPhongBan(dsPhongBan);
+		
 	}
 }
