@@ -62,6 +62,15 @@ public class QLLNhanVienController implements ActionListener{
 		} else if(cmNhanVien.equals("Sort")) {
 			this.view.sapXepTheoIdNV();
 		
+		} else if(cmNhanVien.equals("Save")) {
+			this.view.thucHienSaveFile();
+		
+		} else if(cmNhanVien.equals("Open")) {
+			this.view.thucHienOpenFile();
+			this.view.thucHienTaiLaiDuLieuNV();
+			this.view.thucHienTaiLaiDuLieuPB();
+			this.view.taiLaiDanhSachPB();
+			
 		} else if(cmNhanVien.equals("Phong Ban")) {
 			this.view.getCardLayout().show(this.view.getMainPanel(), "Phong Ban");
 		
