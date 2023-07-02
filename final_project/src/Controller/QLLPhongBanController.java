@@ -18,7 +18,7 @@ public class QLLPhongBanController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmPhongBan = e.getActionCommand();
-		//JOptionPane.showMessageDialog(this.view, "Ban vua nhan vao" + cmPhongBan);
+		JOptionPane.showMessageDialog(this.view, "Ban vua nhan vao" + cmPhongBan);
 		
 		if(cmPhongBan.equals("Nhap")) {
 			this.view.xoaFormPB();

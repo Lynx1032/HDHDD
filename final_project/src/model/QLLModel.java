@@ -369,6 +369,15 @@ public class QLLModel {
             System.out.println(bangLuong);
         }
     }
+    
+    public void sapXepBangLuongTheoTongLuong() {
+    	Collections.sort(danhSachBangLuong, new Comparator<BangLuong>() {
+            @Override
+            public int compare(BangLuong bl1, BangLuong bl2) {
+                return Double.compare(bl1.getTongLuong(), bl2.getTongLuong());
+            }
+        });
+    }
 
 
 	public boolean kiemTraTonTaiPB(PhongBan phongBan) {

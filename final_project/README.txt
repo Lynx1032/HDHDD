@@ -21,6 +21,7 @@ Chức năng cần thực hiện:
  
  
 CẬP NHẬT TIẾN ĐỘ:
-	- Sắp xếp nhân viên vẫn chưa khả dụng.
-	- Vẫn phải nhập lương cơ bản bằng tay chứ không thể lấy tự động.
-	- File Employee.java gần như không sử dụng đến.
+	- Chức năng tìm kiếm, sắp xếp nhân viên vẫn chưa có.
+	- Chưa thể gán vị trí cụ thể cho từng nhân viên.
+	- Chưa thể sắp xếp nhân viên vào đúng phòng ban.
+	...

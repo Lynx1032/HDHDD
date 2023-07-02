@@ -1,6 +1,6 @@
 package model;
 
-class BangLuong {
+public class BangLuong {
     private String maNhanVien;
     private PhongBan phongBan;
     private double tongLuong;

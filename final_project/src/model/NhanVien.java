@@ -1,8 +1,8 @@
-//package model
+package model;
 
-import java.io.*;
+import java.io.Serializable;
 
-public abstract class NhanVien implements Serializable{
+public abstract class NhanVien implements Serializable {
     private String maNhanVien;
     private String hoTen;
     private String soDienThoai;

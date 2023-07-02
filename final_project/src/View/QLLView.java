@@ -30,7 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
+import Controller.QLLLuongPhongBanController;
 import Controller.QLLNhanVienController;
 import Controller.QLLPhongBanController;
 import model.QLLModel;
@@ -43,10 +43,15 @@ import model.NhanVienThoiVu;
 import model.NhanVienThucTap;
 import model.NhanVienVanHanh;
 import model.NhanVienToanThoiGian;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import model.BangLuong;
 import javax.swing.SwingConstants;
+
+
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.regex.*;
 
 
 public class QLLView extends JFrame {
@@ -126,6 +131,7 @@ public class QLLView extends JFrame {
 	private JScrollPane scrollPane_LPB;
 	private JTable table_LPB;
 	private JComboBox comboBox_LPB_PhongBan;
+	private JButton btn_LPB_Huy;
 	
 	//END
 
@@ -181,6 +187,7 @@ public class QLLView extends JFrame {
 		
 		ActionListener actionNV = new QLLNhanVienController(this);
 		ActionListener actionPB = new QLLPhongBanController(this);
+		ActionListener actionLPB = new QLLLuongPhongBanController(this);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -291,6 +298,7 @@ public class QLLView extends JFrame {
 		
 		
 		table_nhanVien = new JTable();
+		table_nhanVien.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table_nhanVien.setRowHeight(25);
 		table_nhanVien.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -335,6 +343,13 @@ public class QLLView extends JFrame {
 		textField_Info_SoDienThoai.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		textField_Info_SoDienThoai.setColumns(10);
 		textField_Info_SoDienThoai.setBounds(631, 400, 176, 40);
+		
+		textField_Info_SoDienThoai.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+                validatePhoneNumber();
+            }
+		});
+		
 		panelNhanVien.add(textField_Info_SoDienThoai);
 		
 		lblSoDienThoai = new JLabel("So Dien Thoai:");
@@ -777,7 +792,7 @@ public class QLLView extends JFrame {
         
         lblNewLabel_1 = new JLabel("DANH SACH LUONG THEO PHONG BAN");
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 24));
-        lblNewLabel_1.setBounds(402, 45, 433, 100);
+        lblNewLabel_1.setBounds(402, 45, 433, 97);
         panelLuongPB.add(lblNewLabel_1);
         
         table_LPB = new JTable();
@@ -786,24 +801,41 @@ public class QLLView extends JFrame {
         	new Object[][] {
         	},
         	new String[] {
-        		"Ma Nhan Vien", "Ho va Ten", "Phong Ban", "Tong Luong"
+        		"Ma Nhan Vien", "Phong Ban", "Tong Luong"
         	}
         ));
         table_LPB.setBounds(0, 0, 1, 1);
+        table_LNV.setRowHeight(25);
         panelLuongPB.add(table_LPB);
         
         scrollPane_LPB = new JScrollPane(table_LPB);
-        scrollPane_LPB.setBounds(143, 188, 983, 373);
+        scrollPane_LPB.setBounds(142, 202, 983, 373);
         panelLuongPB.add(scrollPane_LPB);
         
-        comboBox_LPB_PhongBan = new JComboBox();
-        comboBox_LPB_PhongBan.setBounds(143, 125, 190, 45);
+        comboBox_LPB_PhongBan = new JComboBox<String>();
+        comboBox_LPB_PhongBan.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        comboBox_LPB_PhongBan.setBounds(142, 139, 190, 45);
         panelLuongPB.add(comboBox_LPB_PhongBan);
         
+  
+        
         JButton btn_LPB_Table_Sort = new JButton("Sort");
+        btn_LPB_Table_Sort.addActionListener(actionLPB);
         btn_LPB_Table_Sort.setFont(new Font("Tahoma", Font.PLAIN, 24));
-        btn_LPB_Table_Sort.setBounds(987, 125, 140, 45);
+        btn_LPB_Table_Sort.setBounds(986, 139, 140, 45);
         panelLuongPB.add(btn_LPB_Table_Sort);
+        
+        JButton btn_LPB_Filter = new JButton("Filter");
+        btn_LPB_Filter.addActionListener(actionLPB);
+        btn_LPB_Filter.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        btn_LPB_Filter.setBounds(348, 139, 140, 45);
+        panelLuongPB.add(btn_LPB_Filter);
+        
+        btn_LPB_Huy = new JButton("Huy");
+        btn_LPB_Huy.addActionListener(actionLPB);
+        btn_LPB_Huy.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        btn_LPB_Huy.setBounds(498, 139, 140, 45);
+        panelLuongPB.add(btn_LPB_Huy);
         
 
 		
@@ -861,15 +893,18 @@ public class QLLView extends JFrame {
 		if(comboBox_Filter_PhongBan.getItemCount() > 0) {
 			this.comboBox_Filter_PhongBan.removeAllItems();
 			this.comboBox_Info_PhongBan.removeAllItems();
+			this.comboBox_LPB_PhongBan.removeAllItems();
 		}
 		
 		ArrayList<PhongBan> phongBan = this.model.getDanhSachPhongBan();
 		comboBox_Filter_PhongBan.addItem("");
 		comboBox_Info_PhongBan.addItem("");
+		comboBox_LPB_PhongBan.addItem("");
 		
 		for(PhongBan pb : phongBan) {
 			comboBox_Filter_PhongBan.addItem(pb.getTenPhongBan());
 			comboBox_Info_PhongBan.addItem(pb.getTenPhongBan());
+			comboBox_LPB_PhongBan.addItem(pb.getTenPhongBan());
 		}
 	}
 
@@ -1455,7 +1490,7 @@ public class QLLView extends JFrame {
 	public void sapXepTheoIdNV() {
 		DefaultTableModel model_table = (DefaultTableModel) table_nhanVien.getModel();
 		this.model.sapXepNhanVienTheoMaNhanVien();
-		System.out.println(this.model.getDanhSachNhanVien());
+		//System.out.println(this.model.getDanhSachNhanVien());
 		
 		model_table.setRowCount(0);
 		
@@ -1643,23 +1678,20 @@ public class QLLView extends JFrame {
 
 	public void thucHienSaveFile() {
 		try {
-			FileOutputStream fosNV = new FileOutputStream("NhanVien.txt");
+			FileOutputStream fosNV = new FileOutputStream("\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\NhanVien.txt");
 			ObjectOutputStream oosNV = new ObjectOutputStream(fosNV);
 			for(NhanVien nv : this.model.getDanhSachNhanVien()) {
 				oosNV.writeObject(nv);
-				oosNV.flush();
 			}
-			
 			oosNV.close();
 			fosNV.close();
 			
-			FileOutputStream fosPB = new FileOutputStream("PhongBan.txt");
+			FileOutputStream fosPB = new FileOutputStream("\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\PhongBan.txt");
 			ObjectOutputStream oosPB = new ObjectOutputStream(fosPB);
 			for(PhongBan pb : this.model.getDanhSachPhongBan()) {
 				oosPB.writeObject(pb);
-				oosPB.flush();
+				
 			}
-			
 			oosPB.close();
 			fosPB.close();
 			
@@ -1673,7 +1705,7 @@ public class QLLView extends JFrame {
 		ArrayList<NhanVien> dsNhanVien = new ArrayList<NhanVien>();
 		ArrayList<PhongBan> dsPhongBan = new ArrayList<PhongBan>();
 		try {
-			FileInputStream fisNV = new FileInputStream("NhanVien.txt");
+			FileInputStream fisNV = new FileInputStream("C:\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\NhanVien.txt");
 			ObjectInputStream oisNV = new ObjectInputStream(fisNV);
 			
 			NhanVien nv = null;
@@ -1683,7 +1715,7 @@ public class QLLView extends JFrame {
 			}
 			oisNV.close();
 			
-			FileInputStream fisPB = new FileInputStream("PhongBan.txt");
+			FileInputStream fisPB = new FileInputStream("C:\\Users\\trann\\Downloads\\document\\ProjectJava\\QuanLyLuongNhanVien\\PhongBan.txt");
 			ObjectInputStream oisPB = new ObjectInputStream(fisPB);
 			
 			PhongBan pb = null;
@@ -1699,5 +1731,100 @@ public class QLLView extends JFrame {
 		this.model.setDanhSachNhanVien(dsNhanVien);
 		this.model.setDanhSachPhongBan(dsPhongBan);
 		
+	}
+	
+	private void validatePhoneNumber() {
+        String phoneNumber = textField_Info_SoDienThoai.getText();
+        Pattern pattern = Pattern.compile("^(\\+?84|0)(9[678]|8[68]|91|8[2345])(\\d{8})$");
+        Matcher matcher = pattern.matcher(phoneNumber);
+        boolean isValid = matcher.matches();
+
+        if (isValid) {
+        	textField_Info_SoDienThoai.setForeground(java.awt.Color.BLACK); // Màu chữ đen nếu số điện thoại hợp lệ
+        } else {
+        	textField_Info_SoDienThoai.setForeground(java.awt.Color.RED); // Màu chữ đỏ nếu số điện thoại không hợp lệ
+        }
+    }
+	
+	private void themBangLuongVaoTable(BangLuong bangLuong) {
+		DefaultTableModel model_table = (DefaultTableModel) table_LPB.getModel();
+		
+		model_table.addRow(new Object[] {
+				bangLuong.getMaNhanVien(),
+				bangLuong.getPhongBan().getTenPhongBan(),
+				bangLuong.getTongLuong()
+		});
+	}
+
+	public void thucHienLapBangLuong() {
+		
+		this.model.lapBangLuongTheoThang();
+		this.thucHienTaiLaiDuLieuBL();
+		
+	}
+	
+	public void thucHienTaiLaiDuLieuBL() {
+		while(true) {
+			DefaultTableModel model_table = (DefaultTableModel) table_LPB.getModel();
+			int soLuongDong = model_table.getRowCount();
+			
+			if(soLuongDong == 0) 
+				break;
+			else 
+				try {
+					model_table.removeRow(0);
+					
+				} catch(Exception e) {
+					e.printStackTrace();
+					
+				}
+		}
+		for(BangLuong bangLuong : this.model.getDanhSachBangLuong()) {
+			this.themBangLuongVaoTable(bangLuong);
+		}
+	}
+	
+	public void thucHienLocPB() {
+		this.thucHienTaiLaiDuLieuBL();
+		
+		String phong = this.comboBox_LPB_PhongBan.getSelectedItem() + "";
+		DefaultTableModel model_table = (DefaultTableModel) table_LPB.getModel();
+		int soLuongDong = model_table.getRowCount();
+		
+		Set<String> idCuaNhanVienCanXoa = new TreeSet<String>();
+		
+		if(phong.length() > 0) {
+			PhongBan phongBanDaChon = this.model.getPhongBanByTen(phong);
+			for(int i = 0; i < soLuongDong; i++) {
+				String tenPhong = model_table.getValueAt(i, 1) + "";
+				String id = model_table.getValueAt(i, 0) + "";
+				
+				if(!tenPhong.equals(phongBanDaChon.getTenPhongBan())) {
+					idCuaNhanVienCanXoa.add(id);
+				}
+			}
+		}
+		
+		for(String  idCanXoa : idCuaNhanVienCanXoa) {
+			//System.out.println(idCanXoa);
+			soLuongDong = model_table.getRowCount();
+			
+			for(int i = 0; i < soLuongDong; i++) {
+				String idTrongTable = model_table.getValueAt(i, 0) + "";
+				//System.out.println("idTrongTable: " + idTrongTable);
+				
+				if(idTrongTable.equals(idCanXoa)) {
+					//System.out.println("Đã xóa: " + i);
+					
+					try {
+						model_table.removeRow(i);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					break;
+				}		
+			}
+		}
 	}
 }

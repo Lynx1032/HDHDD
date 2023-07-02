@@ -1,6 +1,8 @@
 package model;
 
-public abstract class NhanVienToanThoiGian extends NhanVien {
+import java.io.Serializable;
+
+public abstract class NhanVienToanThoiGian extends NhanVien implements  Serializable{
 	private double phuCap;
 	private double thuong;
 	private double phat;

@@ -21,7 +21,7 @@ public class QLLNhanVienController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmNhanVien = e.getActionCommand();
-		//JOptionPane.showMessageDialog(this.view, "Ban vua nhan vao: " + cmNhanVien);
+		JOptionPane.showMessageDialog(this.view, "Ban vua nhan vao: " + cmNhanVien);
 		
 		if(cmNhanVien.equals("Nhap")) {
 			this.view.xoaFormNV();
@@ -80,9 +80,10 @@ public class QLLNhanVienController implements ActionListener{
 		}  else if(cmNhanVien.equals("Bang Luong Nhan Vien")) {
 			this.view.getCardLayout().show(this.view.getMainPanel(), "Luong Nhan Vien");
 			
+			
 		} else if(cmNhanVien.equals("Bang Luong Phong Ban")) {
 			this.view.getCardLayout().show(this.view.getMainPanel(), "Luong Phong Ban");
-			
+			this.view.thucHienLapBangLuong();
 		}
 	}
 

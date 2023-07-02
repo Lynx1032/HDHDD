@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.io.*;
 
-public class PhongBan implements Serializable{
+
+public class PhongBan implements Serializable {
     private String maPhongBan;
     private String tenPhongBan;
     private int soLuongNhanVien;
